@@ -1,13 +1,55 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>
+      Profile
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      User Information
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Display user information here -->
+      <ion-item>
+        <ion-label>Name:</ion-label>
+        <ion-text>{{ userName }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Email:</ion-label>
+        <ion-text>{{ userEmail }}</ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Reserved Halls Section -->
+  <ion-card>
+    <ion-card-header>
+      Reserved Halls
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Display reserved halls information here -->
+      <ion-item *ngFor="let hall of reservedHalls">
+        {{ hall.name }}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Reserved Events Section -->
+  <ion-card>
+    <ion-card-header>
+      Reserved Events
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Display reserved events information here -->
+      <ion-item *ngFor="let event of reservedEvents">
+        {{ event.name }}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
