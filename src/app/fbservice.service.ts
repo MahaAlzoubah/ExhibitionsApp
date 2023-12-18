@@ -88,10 +88,15 @@ export class FBserviceService {
     this.eventsCollection = collection(this.firestore, 'events');
     this.getEvents();
     this.hallsCollection = collection(this.firestore, 'halls');
+    this.getHalls();
     this.rEventsCollection = collection(this.firestore, 'reservationEvents');
+    this.getResEvents();
     this.rHallsCollection = collection(this.firestore, 'reservationHalls'); 
+    this.getResHalls();
     this.rRequestCollection = collection(this.firestore, 'reservationRequest');
+    this.getRequests();
     this.usersCollection = collection(this.firestore, 'users');
+    this.getUsers();
   }
 
   // To get Events from the database
@@ -100,5 +105,33 @@ export class FBserviceService {
     this.events$ = collectionData(q, { idField: 'id', }) as Observable<Events[]>;
   }
 
+  // To get halls from the database
+  async getHalls(){
+    const q = query(collection(this.firestore,'halls'));
+    this.halls$ = collectionData(q, { idField: 'id', }) as Observable<Halls[]>;
+  }
+  // To get events reservation from the database
+  async getResEvents(){
+    const q = query(collection(this.firestore,'reservationEvents'));
+    this.reservationEvents$ = collectionData(q, { idField: 'id', }) as Observable<ReservationEvents[]>;
+  }
+  // To get reserved halls from the database
+  async getResHalls(){
+    const q = query(collection(this.firestore,'reservationHalls'));
+    this.halls$ = collectionData(q, { idField: 'id', }) as Observable<Halls[]>;
+  }
+
+  // To get requests from the database
+  async getRequests(){
+   const q = query(collection(this.firestore,'reservationRequest'));
+   this.reservationRequest$ = collectionData(q, { idField: 'id', }) as Observable<ReservationRequest[]>;
+  }
+
+
+  // To get users from the database
+  async getUsers(){
+    const q = query(collection(this.firestore,'users'));
+    this.users$ = collectionData(q, { idField: 'id', }) as Observable<Users[]>;
+  }
 
 }
