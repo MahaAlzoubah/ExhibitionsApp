@@ -18,8 +18,6 @@ import { Router } from '@angular/router';
 export interface Events {
   id: string;
   Agenda: string;
-  Description: string;
-  HallName: string;
   Attendees: string[];
   Exhibition: string;
   Speakers: string[];
@@ -30,9 +28,10 @@ export interface Events {
 export interface Halls {
   id: string;
   Availability: string;
+  Description: string;
+  HallName: string;
   BusinessContact: string;
   Capacity: string;
-  HallName: string;
   HallNum: string;
   Image: string;
   NumBooths: string;
