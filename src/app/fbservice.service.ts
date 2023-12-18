@@ -18,6 +18,8 @@ import { Router } from '@angular/router';
 export interface Events {
   id: string;
   Agenda: string;
+  Description: string;
+  HallName: string;
   Attendees: string[];
   Exhibition: string;
   Speakers: string[];
@@ -85,10 +87,19 @@ export class FBserviceService {
 
   constructor(public firestore: Firestore, public auth:Auth, public router: Router) {
     this.eventsCollection = collection(this.firestore, 'events');
+    this.getEvents();
     this.hallsCollection = collection(this.firestore, 'halls');
     this.rEventsCollection = collection(this.firestore, 'reservationEvents');
     this.rHallsCollection = collection(this.firestore, 'reservationHalls'); 
     this.rRequestCollection = collection(this.firestore, 'reservationRequest');
     this.usersCollection = collection(this.firestore, 'users');
   }
+
+  // To get Events from the database
+  async getEvents(){
+    const q = query(collection(this.firestore,'events'));
+    this.events$ = collectionData(q, { idField: 'id', }) as Observable<Events[]>;
+  }
+
+
 }
