@@ -11,6 +11,34 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'custom-page',
+    loadChildren: () => import('./custom-page/custom-page.module').then( m => m.CustomPagePageModule)
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
+  {
+    path: 'events',
+    loadChildren: () => import('./events/events.module').then( m => m.EventsPageModule)
+  },
+  {
+    path: 'halls',
+    loadChildren: () => import('./halls/halls.module').then( m => m.HallsPageModule)
+  },
+  {
+    path: 'halls-details',
+    loadChildren: () => import('./halls-details/halls-details.module').then( m => m.HallsDetailsPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'requests',
+    loadChildren: () => import('./requests/requests.module').then( m => m.RequestsPageModule)
+  },
 ];
 
 @NgModule({
