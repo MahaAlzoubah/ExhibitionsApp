@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header color="#">
   <ion-toolbar>
     <ion-title>
       Profile
@@ -7,9 +7,16 @@
 </ion-header>
 
 <ion-content>
+
   <ion-card>
     <ion-card-header>
-      User Information
+      <ion-avatar>
+        <!-- You can use ion-img for image or ion-icon for an icon -->
+        <ion-img src="./assets/profileAvatart.jpeg"></ion-img>
+        <!-- Example with ion-icon -->
+        <!-- <ion-icon name="person"></ion-icon> -->
+      </ion-avatar>
+
     </ion-card-header>
 
     <ion-card-content>
@@ -24,32 +31,37 @@
       </ion-item>
     </ion-card-content>
   </ion-card>
+  
+<!-- Reserved Halls Section -->
+<ion-card>
+  <ion-card-header (click)="toggleAccordion('halls')">
+    Reserved Halls
+  </ion-card-header>
 
-  <!-- Reserved Halls Section -->
-  <ion-card>
-    <ion-card-header>
-      Reserved Halls
-    </ion-card-header>
-
-    <ion-card-content>
-      <!-- Display reserved halls information here -->
+  <ion-card-content *ngIf="isAccordionOpen('halls')">
+    <!-- Display reserved halls information here -->
+    <ion-list>
       <ion-item *ngFor="let hall of reservedHalls">
         {{ hall.name }}
       </ion-item>
-    </ion-card-content>
-  </ion-card>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Reserved Events Section -->
-  <ion-card>
-    <ion-card-header>
-      Reserved Events
-    </ion-card-header>
+<!-- Reserved Events Section -->
+<ion-card>
+  <ion-card-header (click)="toggleAccordion('events')">
+    Reserved Events
+  </ion-card-header>
 
-    <ion-card-content>
-      <!-- Display reserved events information here -->
+  <ion-card-content *ngIf="isAccordionOpen('events')">
+    <!-- Display reserved events information here -->
+    <ion-list>
       <ion-item *ngFor="let event of reservedEvents">
         {{ event.name }}
       </ion-item>
-    </ion-card-content>
-  </ion-card>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+  
 </ion-content>
