@@ -1,4 +1,4 @@
-<ion-header color="#">
+<ion-header>
   <ion-toolbar>
     <ion-title>
       Profile
@@ -9,59 +9,111 @@
 <ion-content>
 
   <ion-card>
-    <ion-card-header>
+    <ion-card-header class="ProHead">
+     <ion-item lines="none"> <!-- Set lines to 'none' here -->
       <ion-avatar>
-        <!-- You can use ion-img for image or ion-icon for an icon -->
         <ion-img src="./assets/profileAvatart.jpeg"></ion-img>
-        <!-- Example with ion-icon -->
-        <!-- <ion-icon name="person"></ion-icon> -->
       </ion-avatar>
-
-    </ion-card-header>
+      <ion-label>
+        <ion-text>{{ name }}</ion-text>
+      </ion-label>
+    </ion-item> 
+   </ion-card-header>
 
     <ion-card-content>
       <!-- Display user information here -->
-      <ion-item>
-        <ion-label>Name:</ion-label>
-        <ion-text>{{ userName }}</ion-text>
-      </ion-item>
-      <ion-item>
-        <ion-label>Email:</ion-label>
-        <ion-text>{{ userEmail }}</ion-text>
-      </ion-item>
+      <ion-list lines="none">
+        <ion-item line="none">
+          <ion-label>Email:</ion-label>
+          <ion-text>{{ Email }}</ion-text>
+        </ion-item>
+      </ion-list>
+      <ion-list lines="none">
+        <ion-item line="none">
+          <ion-label>Type:</ion-label>
+          <ion-text>{{ type }}</ion-text>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
   
-<!-- Reserved Halls Section -->
-<ion-card>
-  <ion-card-header (click)="toggleAccordion('halls')">
-    Reserved Halls
-  </ion-card-header>
-
-  <ion-card-content *ngIf="isAccordionOpen('halls')">
-    <!-- Display reserved halls information here -->
-    <ion-list>
-      <ion-item *ngFor="let hall of reservedHalls">
-        {{ hall.name }}
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+ <!-- Reserved Halls Section -->
+<ion-accordion-group *ngIf="reservationRequestData.length > 0">
+  <ion-accordion>
+    <ion-item class="custom-item" slot="header">
+      Your Reservation Requests
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      <ion-card *ngFor="let request of reservationRequestData" lines="none">
+        <ion-card-content class="ion-text-wrap">
+          <ion-grid>
+            <ion-row align-items-center>
+              <ion-col size="4">
+                  <ion-img [src]="'./assets/' + request.Image + '.jpeg'"></ion-img>
+              </ion-col>
+              <ion-col size="7">
+                <ion-label>{{ request.HallName }}</ion-label>
+              </ion-col>
+              <ion-col size="12" class="ion-text-end ion-align-self-end">
+                <!-- Show the button when request.Status is equal to status[1].name -->
+                <ion-button size="small" color="success" *ngIf="request.Status === status[1].name" routerLink="/custom-page">
+                  Add Event
+                </ion-button>
+                <!-- Show the icon when request.Status is not equal to status[1].name -->
+                <ion-label [color]="status[0].color" *ngIf="request.Status == status[0].name">
+                  {{ status[0].name}} <ion-icon [name]="status[0].iconName"></ion-icon>
+                </ion-label>
+                <ion-label [color]="status[2].color" *ngIf="request.Status == status[2].name">
+                  {{ status[2].name}} <ion-icon [name]="status[2].iconName"></ion-icon>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-accordion>
+</ion-accordion-group>
 
 <!-- Reserved Events Section -->
-<ion-card>
-  <ion-card-header (click)="toggleAccordion('events')">
-    Reserved Events
-  </ion-card-header>
+<ion-accordion-group *ngIf="reservationEventData.length > 0" >
+  <ion-accordion #Accordion>
+    <ion-item class="custom-item" slot="header" color="#fefae0">
+      Your Events
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      <ion-card *ngFor="let event of reservationEventData" lines="none">
+        <ion-card-content class="ion-text-wrap">
+          <ion-grid>
+            <ion-row align-items-center>
+              <ion-col>
+                <ion-label> Event: {{ event.EventName }}</ion-label>
+              </ion-col>
+            </ion-row >
+              <ion-row align-items-center>
+              <ion-col >
+                <ion-label> Hall: {{ event.HallName }}</ion-label>
+              </ion-col>
+            </ion-row >
+            <ion-row align-items-center>
+              <ion-col  class="ion-text-end ion-align-self-end">
+                <ion-button size="small" color="success" routerLink="/event-details/{{event.EventID}}">
+                  View Details
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-accordion>
+</ion-accordion-group>
 
-  <ion-card-content *ngIf="isAccordionOpen('events')">
-    <!-- Display reserved events information here -->
-    <ion-list>
-      <ion-item *ngFor="let event of reservedEvents">
-        {{ event.name }}
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
-  
 </ion-content>
+
+<!-- Footer -->
+<ion-footer>
+  <ion-toolbar>
+    <p>&copy; {{ currentYear }} Exhibitione</p>
+  </ion-toolbar>
+</ion-footer>

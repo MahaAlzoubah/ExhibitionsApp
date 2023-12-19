@@ -1,13 +1,34 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>requests</ion-title>
+    <ion-title>
+      Requests
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">requests</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  
+  <ion-card *ngFor="let request of fb.reservationRequest$ | async">
+    <img src="../assets/{{request.image}}.jpeg"/>
+    <ion-card-content>
+    <ion-card-title>{{request.HallName}}</ion-card-title>
+    <p>
+      {{ request.Date }}
+    </p>
+    <ion-text color="danger" *ngIf="request.Status === 'Rejected' ">{{MessageReject}}</ion-text>
+    <ion-text color="success" *ngIf="request.Status === 'Approved' ">{{MessageApprove}}</ion-text>
+    <div *ngIf="request.Status === 'Pending' ">
+      <ion-button class="cardButton" color="danger" slot="start" size="small" (click)="reject(request)">Reject</ion-button>
+      <ion-button class="cardButton"  color="success" slot="end" size="small" (click)="approve(request)">Approve</ion-button>
+    </div>
+     <!-- routerLink="../halls-details/{{request.HallNum}}"  -->
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<!-- Footer -->
+<ion-footer>
+  <ion-toolbar>
+    <p>&copy; {{ currentYear }} Exhibitione</p>
+  </ion-toolbar>
+</ion-footer>

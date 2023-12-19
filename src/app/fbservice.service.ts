@@ -16,45 +16,54 @@ import {
 import { Router } from '@angular/router';
   
 export interface Events {
-  id: string;
+  id?: string;
   Agenda: string;
   Attendees: string[];
   Exhibition: string;
   Speakers: string[];
   Updates: string;
   UserID: string;
+  HallName: string;
+  EventName: string;
 }
 
 export interface Halls {
-  id: string;
+  id?: string;
+  HallNum: string;
   Availability: string;
   Description: string;
   HallName: string;
   BusinessContact: string;
   Capacity: string;
-  HallNum: string;
   Image: string;
   NumBooths: string;
 }
 
 export interface ReservationEvents {
+  id?: string;
   EventID: string;
-  UserID: string;
+  userEmail: string;
+  EventName: string;
 }
 
 export interface ReservationHalls {
-  HallNum: string;
+  id?: string;
+  HallName: string;
   UserID: string;
+  date: Data;
 }
 
 export interface ReservationRequest {
+  id: string;
   Date: Data;
-  HallNum: string;
-  Status: 'Pending';
-  UserID: string;
+  HallName: string;
+  Status: string;
+  UserEmail: string;
+  image: string;
 }
 
 export interface Users {
+  id?: string;
   Email: string;
   Name: string;
   Password: string;
@@ -75,7 +84,7 @@ export class FBserviceService {
   public reservationEvents$: Observable<ReservationEvents[]> | undefined;
   public rEventsCollection: CollectionReference<DocumentData>;
 
-  public reservationHalls$: Observable<ReservationEvents[]> | undefined;
+  public reservationHalls$: Observable<ReservationHalls[]> | undefined;
   public rHallsCollection: CollectionReference<DocumentData>;
 
   public reservationRequest$: Observable<ReservationRequest[]> | undefined;
@@ -116,10 +125,12 @@ export class FBserviceService {
     this.reservationEvents$ = collectionData(q, { idField: 'id', }) as Observable<ReservationEvents[]>;
   }
   // To get reserved halls from the database
-  async getResHalls(){
-    const q = query(collection(this.firestore,'reservationHalls'));
-    this.halls$ = collectionData(q, { idField: 'id', }) as Observable<Halls[]>;
-  }
+// To get reserved halls from the database
+async getResHalls() {
+  const q = query(collection(this.firestore, 'reservationHalls'));
+  this.reservationHalls$ = collectionData(q, { idField: 'id' }) as Observable<ReservationHalls[]>;
+}
+
 
   // To get requests from the database
   async getRequests(){
@@ -133,5 +144,73 @@ export class FBserviceService {
     const q = query(collection(this.firestore,'users'));
     this.users$ = collectionData(q, { idField: 'id', }) as Observable<Users[]>;
   }
+
+  Message="";
+  signIn(Email: string, password: string){
+    signInWithEmailAndPassword(getAuth(), Email, password)
+    .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    alert("user sign in");
+    this.router.navigateByUrl('/view-activity');
+
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // alert("Error in sign in: " + errorMessage + error.code);
+    this.Message="invalid email or password";
+  });
+  }
+
+  //Sign-up 
+  signUp(Email: string, password: string){
+    createUserWithEmailAndPassword(getAuth(), Email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    alert("user sign up");
+    this.router.navigateByUrl('/view-activity');
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert("Error in sign up: " + errorMessage);
+  });
+
+  }
+
+  //Sign-out 
+  signOut(){
+    signOut(getAuth())
+  .then((userCredential) => {
+    // Signed out 
+    alert("user sign out");
+    this.router.navigateByUrl('/');
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert("Error in sign out: " + errorMessage);
+  });
+
+  }
+
+  //Add reservationRequest in Firestore
+addRequests(ResRequest: ReservationRequest): Promise<DocumentReference>{
+  return addDoc( collection(this.firestore, 'reservationRequest'), ResRequest);
+ }
+
+  updateRequests(request: ReservationRequest): Promise<void> {
+    return updateDoc(doc(this.firestore, 'reservationRequest', request.id), { 
+      Date: request.Date,
+      HallName: request.HallName,
+      Status: request.Status,
+      UserEmail: request.UserEmail,
+      image: request.image,
+    });
+    
+  }
+  
 
 }

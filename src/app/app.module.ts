@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+
 
 
 
@@ -28,6 +30,7 @@ const firebaseConfig = {
   provideFirebaseApp(() => initializeApp(firebaseConfig)),
   // Import the AngularFireDatabaseModule to use database
   provideFirestore(() => getFirestore()),
+  provideAuth(() => getAuth())
 
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
