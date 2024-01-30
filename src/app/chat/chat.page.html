@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="isSignIn">
+
+
+  <ion-text *ngIf="isAdmin">
+  <ion-text *ngFor="let user of fb.users$ | async" >
+    <ion-button  *ngIf="user.Type !== 'Admin'" expand="full" class="userEmail" color="#b7b7a4" 
+                 (click)="ChangeMode(user.Email)">
+      {{user.Email}}
+    </ion-button>
+  </ion-text> 
+  </ion-text>
+
+  <ion-text *ngIf="!isAdmin">
+    <ion-card class="myCard">
+      <ion-list lines="none">
+        <ion-item *ngFor="let mes of DetailMessage">
+          <ion-label [class]="mes.sender === 'Admin' ? 'Admin' : 'User'">
+            {{mes.sender}} : {{ mes.message}}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    
+      <ion-row>
+        <ion-col size="9">
+            <ion-input [(ngModel)]="newMessage" placeholder="Type your message..."></ion-input>
+        </ion-col>
+        <ion-col size="3">
+            <ion-button (click)="sendMessage()" class="cardButton" color="#b7b7a4">Send</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-text>
+
+</ion-content>
+
+
+<!-- Footer -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-text>&copy; {{ currentYear }} Exhibition</ion-text>
+  </ion-toolbar>
+</ion-footer>

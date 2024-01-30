@@ -1,13 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>events</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons style="margin-left: 10px;" slot="end">
+      <!-- Use color attribute to set the font color to white -->
+      <ion-button routerLink="/dashboard" color="light" mode="ios">Home</ion-button>
+      <ion-button routerLink="/chat" color="light" mode="ios">Chat</ion-button>
+      <ion-button routerLink="/profile" color="light" mode="ios">Profile</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true" *ngIf="isSignIn">
+  
+  <ion-searchbar (ionInput)="getEvent($event)"></ion-searchbar>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">events</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngFor="let event of myEvents">
+    <ion-card-content>
+      <ion-card-title>{{event.EventName}}</ion-card-title>
+      <p>{{event.HallName}}</p>
+      <p>{{event.Date}}</p>
+      <ion-button class="cardButton" fill="clear" (click)="goTo(event.HallName, event.Date)">View detail</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p>&copy; {{ currentYear }} Exhibitione</p>
+  </ion-toolbar>
+</ion-footer>
+

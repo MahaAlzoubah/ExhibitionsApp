@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { HallsDetailsPageRoutingModule } from './halls-details-routing.module';
 
 import { HallsDetailsPage } from './halls-details.page';
+import { ReactiveFormsModule } from '@angular/forms';
+// import { DatePickerModule } from 'ion-datepicker';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HallsDetailsPageRoutingModule
+    HallsDetailsPageRoutingModule,
+    ReactiveFormsModule,
+    // DatePickerModule
   ],
   declarations: [HallsDetailsPage]
 })

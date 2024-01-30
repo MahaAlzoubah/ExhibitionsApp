@@ -1,13 +1,46 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-avatar slot="start"><ion-img src="../assets/logo.png"></ion-img></ion-avatar>
+    <ion-buttons style="margin-left: 10px;" slot="end">
+      <!-- Use color attribute to set the font color to white -->
+      <ion-button *ngIf="isAdmin" routerLink="/requests" color="light" mode="ios">Requests</ion-button>
+      <ion-button routerLink="/halls" color="light" mode="ios">Halls</ion-button>
+      <ion-button routerLink="/events" color="light" mode="ios">Events</ion-button>
+      <ion-button routerLink="/chat" color="light" mode="ios">Chat</ion-button>
+      <ion-button routerLink="/profile" color="light" mode="ios">Profile</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<ion-content [fullscreen]="true" class="card-background-page" *ngIf="isSignIn">
+
+  <ion-card class="myCard">
+    <img class="card-img" src="../assets/dash1.jpeg" alt="Slide 1">
+    <div class="card-title">The Middle East's newest exhibition centre</div>
+  </ion-card>
+ 
+  <ion-card class="pad">
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item line="none">  
+          <ion-text class="report" >Reservations Past 30 days</ion-text>
+        </ion-item>
+      </ion-list>
+     
+      <ion-list lines="none">
+        <ion-item  class="history" *ngFor="let his of History" line="none">
+          <!-- <ion-icon name="logo-twitter" slot="start"></ion-icon> -->
+            <ion-label slot="start"  class="hallName"> {{his.name}}</ion-label>
+          <ion-badge slot="end">{{his.count}}</ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  
+</ion-content >
+
+<ion-footer>
+  <ion-toolbar>
+    &copy; {{ currentYear }} Exhibitione
+  </ion-toolbar>
+</ion-footer>

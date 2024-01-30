@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { HallsPage } from './halls/halls.page';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'custom-page',
+    path: 'custom-page/:data',
     loadChildren: () => import('./custom-page/custom-page.module').then( m => m.CustomPagePageModule)
   },
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
     loadChildren: () => import('./halls/halls.module').then( m => m.HallsPageModule)
   },
   {
-    path: 'halls-details',
+    path: 'halls-details/:hallID',
     loadChildren: () => import('./halls-details/halls-details.module').then( m => m.HallsDetailsPageModule)
   },
   {
@@ -38,6 +39,14 @@ const routes: Routes = [
   {
     path: 'requests',
     loadChildren: () => import('./requests/requests.module').then( m => m.RequestsPageModule)
+  },
+  {
+    path: 'event-details/:EventID',
+    loadChildren: () => import('./event-details/event-details.module').then( m => m.EventDetailsPageModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
   },
 ];
 

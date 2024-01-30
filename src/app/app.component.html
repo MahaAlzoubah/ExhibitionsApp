@@ -1,3 +1,32 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="main-content">
+    <!-- Add your menu content here -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Filter</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-button  fill="clear" style="color: #b7b7a4">Capacity</ion-button>
+        <ion-button  (click) ="ChangeCalendar()" fill="clear" style="color: #b7b7a4">Reserved</ion-button>
+         <!-- Show calendar modal -->
+        <ion-datetime
+        color="#b7b7a4"
+        [(ngModel)]="ReservedselectedDate"
+        format="DD MMM YYYY"
+        *ngIf="showCalendar"
+      ></ion-datetime>
+        <ion-button  (click) ="ChangeCalendar()" fill="clear" style="color: #b7b7a4">Available</ion-button>
+         <!-- Show calendar modal -->
+        <ion-datetime
+        color="#b7b7a4"
+        [(ngModel)]="AvailableselectedDate"
+        format="DD MMM YYYY"
+        *ngIf="showCalendar"
+      ></ion-datetime>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>

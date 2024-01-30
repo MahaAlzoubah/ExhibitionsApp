@@ -1,11 +1,108 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Exhibition
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<ion-button>hii</ion-button>
+
+  <!-- <ion-list lines="none">
+    <ion-item line="none">
+      <p class="ion-text-center" style="color:#b7b7a4; font-weight: bold; margin-top: 20px; padding-left: 10px; padding-right: 10px; line-height: 50px; font-size: 3rem; font-family: 'Times New Roman', Times, serif;">Exhibition App for Halls and Events Reservation</p>
+    </ion-item>
+  </ion-list> -->
+
+  <ion-img src="../assets/Dlogo.png"></ion-img>
+
+  <!-- Sign In -->
+
+  <ion-list *ngIf="signedIn">
+    <ion-item>
+      <ion-input 
+        label="Email :"      
+        type="email"      
+        [(ngModel)]="email">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input 
+        label="Password :"   
+        type="password"   
+        [(ngModel)]="password">
+      </ion-input>
+    </ion-item>
+    <ion-text color="danger">
+      {{fb.Message}}
+    </ion-text>
+    <ion-button 
+      color="#b7b7a4"
+      type="submit" 
+      expand="full" 
+      (click)="signIn()">
+      Sign In
+    </ion-button>
+
+    <a 
+      style="color: #b7b7a4; text-decoration: underline;"
+      (click)="signedIn=false">
+      don't have an account?
+    </a>
+  </ion-list>
+
+  <!-- Sign Up -->
+  <ion-list *ngIf="!signedIn">
+    <form [formGroup]="userForm" (ngSubmit)="signUp(userForm.value)">
+
+      <ion-item>
+        <ion-input 
+          label="Email :" 
+          formControlName="email"
+          type="email">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input 
+          label="Name :"
+          formControlName="name" 
+          type="text" >
+        </ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-input 
+          label="Password :" 
+          formControlName="password"
+          type="password">
+        </ion-input>
+      </ion-item>
+
+
+      <ion-button 
+        color="#b7b7a4"
+        type="submit" 
+        expand="full" 
+        [disabled]="!userForm.valid">
+        Sign Up
+      </ion-button>
+  
+      <a 
+        style="color: #b7b7a4; text-decoration: underline;"
+        (click)="signedIn=true">
+        Already have an account?
+      </a>
+    </form>
+  </ion-list>  
+  
 </ion-content>
+
+Footer
+<ion-footer>
+  <ion-toolbar>
+    <p style="margin-left: 15px;"> &copy; {{ currentYear }} Exhibition </p>
+  </ion-toolbar>
+</ion-footer>
+

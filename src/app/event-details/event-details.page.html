@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title color="light">Event Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="light"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="isSignIn">
+  <ion-card forceOverscroll="false" #rectangle class="rectangle">
+    <ion-card-title style="margin-left: 20px; margin-top: 20px;">{{event.EventName}}</ion-card-title>
+    <ion-card-content>
+     <ion-list lines="none">
+      <ion-label class="myCard">Agenda: </ion-label>
+        <ion-list lines="none" *ngFor="let age of myAgenda; let i = index"> 
+      <ion-card>
+      <ion-card-content>
+          <ion-label>Topic {{i+1}}</ion-label>
+      <ion-item>
+        <ion-label style="color: #b7b7a4" class="myCard">Time: </ion-label>
+        <ion-input  value="{{age.time}}" readonly="true" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label style="color: #b7b7a4" class="myCard">Title: </ion-label>
+        <ion-input  value="{{age.title}}" readonly="true" ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label style="color: #b7b7a4" class="myCard">Speakers: </ion-label>
+        <ion-input  value="{{age.speaker}}" readonly="true" ></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+    </ion-list>
+
+   
+    <ion-item>
+      <ion-label class="myCard">HallName: </ion-label>
+      <ion-input  readonly="true" value="{{event.HallName}} "></ion-input>
+     </ion-item>
+ 
+     <ion-item>
+      <ion-label  class="myCard">Date: </ion-label>
+      <ion-input readonly="true" value="{{event.Date}}"></ion-input>
+     </ion-item>
+      <!-- <ion-input label="Attendees:" readonly="true" value="{{event.Attendees.length}}"></ion-input> -->
+      <ion-item>
+      <ion-label  class="myCard">Updates: </ion-label>
+      <ion-input [readonly]="true" value="{{event.Updates}} "></ion-input>
+     </ion-item>
+     
+     </ion-list>
+
+    
+    <ion-button class="cardButton" fill="clear" (click)="attend()" [disabled]="full" *ngIf="!isAdmin">Attend</ion-button>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-fab  vertical="bottom" horizontal="end" slot="fixed" *ngIf="creator"  class="fabPosition" (click)="delete()">
+    <ion-fab-button color="danger">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+
+
+

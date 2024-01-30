@@ -1,34 +1,51 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Requests
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons style="margin-left: 10px;" slot="end">
+      <!-- Use color attribute to set the font color to white -->
+      <ion-button routerLink="/dashboard" color="light" mode="ios">Home</ion-button>
+      <ion-button routerLink="/chat" color="light" mode="ios">Chat</ion-button>
+      <ion-button routerLink="/profile" color="light" mode="ios">Profile</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  
+<ion-content *ngIf="isSignIn && isAdmin">
+
   <ion-card *ngFor="let request of fb.reservationRequest$ | async">
-    <img src="../assets/{{request.image}}.jpeg"/>
+    <img src="../assets/{{ request.image }}.jpeg" />
     <ion-card-content>
-    <ion-card-title>{{request.HallName}}</ion-card-title>
-    <p>
-      {{ request.Date }}
-    </p>
-    <ion-text color="danger" *ngIf="request.Status === 'Rejected' ">{{MessageReject}}</ion-text>
-    <ion-text color="success" *ngIf="request.Status === 'Approved' ">{{MessageApprove}}</ion-text>
-    <div *ngIf="request.Status === 'Pending' ">
-      <ion-button class="cardButton" color="danger" slot="start" size="small" (click)="reject(request)">Reject</ion-button>
-      <ion-button class="cardButton"  color="success" slot="end" size="small" (click)="approve(request)">Approve</ion-button>
-    </div>
-     <!-- routerLink="../halls-details/{{request.HallNum}}"  -->
+      <ion-card-title fontSize="medium">{{ request.HallName }}</ion-card-title>
+      <ion-list lines="none">
+        <ion-item line="none">
+          <ion-text class="request" font="bold">Client Email:</ion-text>
+          <ion-button class="changP" fill="clear">{{ request.UserEmail }}</ion-button>
+        </ion-item>
+        <ion-item line="none">
+          <ion-text class="request" font="bold">Date:</ion-text>
+          <ion-text class="changP">{{ request.Date}}</ion-text>
+          <!-- .toISOString().split('T')[0]  -->
+        </ion-item>
+        <ion-item line="none">
+          <ion-text class="request" font="bold"  *ngIf="request.Status === 'Rejected' || request.Status === 'Approved' ">Request Status:</ion-text>
+          <ion-text class="cardText" color="danger" *ngIf="request.Status === 'Rejected' ">{{ MessageReject }}</ion-text>
+          <ion-text class="cardText" color="success" *ngIf="request.Status === 'Approved' ">{{ MessageApprove }}</ion-text>
+          <div *ngIf="request.Status === 'Pending' ">
+            <ion-button class="cardButton" color="danger" slot="start" size="small" (click)="reject(request)">Reject</ion-button>
+            <ion-button class="cardButton" color="success" slot="end" size="small" (click)="approve(request)">Approve</ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
+
 </ion-content>
 
 <!-- Footer -->
 <ion-footer>
   <ion-toolbar>
-    <p>&copy; {{ currentYear }} Exhibitione</p>
+    <ion-text>&copy; {{ currentYear }} Exhibition</ion-text>
   </ion-toolbar>
 </ion-footer>

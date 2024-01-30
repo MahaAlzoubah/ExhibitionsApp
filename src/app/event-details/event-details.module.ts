@@ -4,19 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HallsPageRoutingModule } from './halls-routing.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import { EventDetailsPageRoutingModule } from './event-details-routing.module';
 
-import { HallsPage } from './halls.page';
+import { EventDetailsPage } from './event-details.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HallsPageRoutingModule,
-    ReactiveFormsModule
+    EventDetailsPageRoutingModule
   ],
-  declarations: [HallsPage]
+  declarations: [EventDetailsPage]
 })
-export class HallsPageModule {}
+export class EventDetailsPageModule {}

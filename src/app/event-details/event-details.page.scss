@@ -1,0 +1,34 @@
+ion-header {
+    ion-toolbar {
+      --background: #b7b7a4; 
+    }
+  }
+
+ion-footer {
+    ion-toolbar {
+      --background: #b7b7a4; 
+    }
+}
+
+.cardButton {
+  background-color: #b7b7a4;
+  color: white;
+  border-radius: 5%;
+  margin-left: 200px;
+  font-weight: bold;
+}
+
+.myCard {
+  --background: #fff;
+  color: #b7b7a4;
+  font-weight: bold;
+}
+
+.fabPosition {
+  position: fixed;
+  bottom: 16px; /* Adjust this value based on your preference */
+}
+
+.rectangle {
+  transform:(0px, 0px);
+}

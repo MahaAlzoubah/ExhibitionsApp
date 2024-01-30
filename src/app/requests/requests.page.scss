@@ -9,3 +9,29 @@ ion-header {
     }
   }
   
+  p{
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .changP{
+   color:rgb(88, 88, 88);
+   padding-left: 5px;
+   font-size: medium;
+  }
+
+  .cardText{
+    font-weight: bold;
+    padding-left: 15px;
+  }
+  .request{
+    font-weight: bold;
+    color: black;
+  }
+
+  .cardButton{
+    padding-left: 8px;
+  }
+  ion-list{
+    padding-top: 15px;
+  }

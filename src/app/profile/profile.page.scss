@@ -1,13 +1,18 @@
+// changed
 ion-header {
   ion-toolbar {
     --background: #b7b7a4; 
+    color: #fff;
   }
 }
 
 ion-content {
+  // change here
+  opacity: 0;
   ion-accordion-group {
     margin-top: 10px;
     margin-bottom: 10px;
+    
 
     ion-accordion {
       .custom-item {
@@ -74,7 +79,25 @@ ion-content {
 ion-footer {
   ion-toolbar {
     --background: #b7b7a4; 
+    color: #fff;
+
   }
 }
 
+.signout{
+  color:#b7b7a4;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.Bcenter{
+  margin-left: auto;
+  margin-right: auto;
+  color: #b7b7a4;
+}
+
+ion-content {
+  --ion-background-color: #f5f5f5; /* Set your desired background color */
+}

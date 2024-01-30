@@ -9,9 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-
-
-
+import { FormsModule } from '@angular/forms';
+// import { AngularDatepickerModule } from 'angular-datepicker';
+// import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB36QGKb8l32Lk9yJcSg2R0ZJlXbVZrApc",
@@ -30,9 +30,12 @@ const firebaseConfig = {
   provideFirebaseApp(() => initializeApp(firebaseConfig)),
   // Import the AngularFireDatabaseModule to use database
   provideFirestore(() => getFirestore()),
-  provideAuth(() => getAuth())
+  provideAuth(() => getAuth()),
+  FormsModule, 
+  // DragDropModule
+  // AngularDatepickerModule
+],
 
-  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,49 @@
+ion-label.Admin {
+    background-color: #c4c4b1;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    align-self: flex-start;
+  }
+  
+  ion-label.User {
+    background-color: #a2a294;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    align-self: flex-end;
+  }
+  
+  ion-header {
+    ion-toolbar {
+      --background: #b7b7a4; 
+      color: #fff;
+    }
+  }
+
+ion-footer {
+    ion-toolbar {
+      --background: #b7b7a4;
+      color: #fff; 
+    }
+}
+
+ion-list{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.btn{
+background-color: #b7b7a4;
+}
+
+.userEmail {
+  background-color: #a2a294;
+  color: #fff;
+}
+
+.cardButton {
+  background-color:#b7b7a4; 
+  color: white; 
+  border-radius: 5%; 
+}

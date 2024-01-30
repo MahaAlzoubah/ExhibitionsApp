@@ -1,13 +1,50 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>hallsDetails</ion-title>
+    <ion-title color="light">Hall Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">hallsDetails</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="isSignIn">
+  <ion-card>
+    <img src="../assets/{{hall.Image}}.jpeg"/>
+    <ion-card-title style="margin-left: 20px; margin-top: 20px;">{{hall.HallName}}</ion-card-title>
+    <ion-card-content>
+     <ion-input [readonly]="!isEditMode" value="{{hall.Description}}" [(ngModel)]="hall.Description"></ion-input>
+     <ion-input label="Capacity (M^2):" [readonly]="!isEditMode" value="{{hall.Capacity}}" [(ngModel)]="hall.Capacity"></ion-input>
+     <ion-input label="No. of Booths:" [readonly]="!isEditMode" value="{{hall.NumBooths}}" [(ngModel)]="hall.NumBooths"></ion-input>
+     <ion-input label="Availability: " [readonly]="!isEditMode" value="{{hall.Availability}}" [(ngModel)]="hall.Availability"></ion-input>
+     <ion-input label="Business contact: " [readonly]="!isEditMode" value="{{hall.BusinessContact}} " [(ngModel)]="hall.BusinessContact"></ion-input>
+
+     <ion-button fill="clear" color="dark" style="margin-right: 200px;" (click)="ChangeCalendar()">
+      <ion-icon name="calendar-outline" style="color: #b7b7a4"></ion-icon> Pick Date
+    </ion-button>
+
+    <!-- Show calendar modal -->
+    <ion-datetime
+    color="#b7b7a4"
+    [(ngModel)]="selectedDate"
+    format="DD MMM YYYY"
+    [min]="minDate"
+    [max]="maxDate"
+    *ngIf="showCalendar"
+    [dayValues]="dayValuesString"
+    ></ion-datetime>
+
+    
+    <div style="margin-left: 20px;">
+      <!-- Button to update the reservation -->
+      <ion-button class="cardButton" fill="clear" *ngIf="isEditMode" (click)="EditHall(hall)">Done</ion-button>
+      <ion-button class="cardButton" fill="clear" (click)="toggleEditMode()" *ngIf="isAdmin">{{ isEditMode ? 'Cancle' : 'Edit' }}</ion-button>
+      <!-- Button to make the reservation -->
+      <ion-button class="cardButton" fill="clear" (click)="reserve()" *ngIf="!isAdmin">Reserve</ion-button>
+    </div>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+
+

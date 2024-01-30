@@ -1,13 +1,134 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>halls</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons style="margin-left: 10px;" slot="end">
+      <!-- Use color attribute to set the font color to white -->
+      <ion-button routerLink="/dashboard" color="light" mode="ios">Home</ion-button>
+      <ion-button routerLink="/chat" color="light" mode="ios">Chat</ion-button>
+      <ion-button routerLink="/profile" color="light" mode="ios">Profile</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true" *ngIf="isSignIn">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">halls</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- <form [formGroup]="hallsForm" (ngSubmit)="add(hallsForm.value)">
+  <ion-item>
+    <ion-input label="Availability: " formControlName="Availability" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Description: " formControlName="Description" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="HallName: " formControlName="HallName" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="BusinessContact: " formControlName="BusinessContact" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Capacity: " formControlName="Capacity" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="HallNum: " formControlName="HallNum" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Image: " formControlName="Image" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="NumBooths: " formControlName="NumBooths" required></ion-input>
+  </ion-item>
+
+  <ion-button type="submit" expand="block">Add</ion-button> 
+</form> -->
+    
+  <ion-segment [(ngModel)]="filterOption">
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="available">
+      <ion-label>Available</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="reserved">
+      <ion-label>Reserved</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="capacity">
+      <ion-label>Capacity</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+ 
+  <ion-searchbar (ionInput)="getHall($event)"></ion-searchbar>
+
+  <ion-item *ngIf="filterOption === 'available' || filterOption === 'reserved'">
+    <ion-input type="Date" label="Select Date" [(ngModel)]="selectedDate" (ionChange)="applyFilter()"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="filterOption === 'capacity'">
+    <ion-label>Capacity</ion-label>
+    <ion-input type="string" [(ngModel)]="selectedCapacity" placeholder="Enter Capacity"></ion-input>
+    <ion-button (click)="applyFilter()" class="applayButton" color="#b7b7a4">Applay</ion-button>
+  </ion-item>
+
+
+  <ion-card *ngFor="let hall of filteredHalls">
+    <img src="../assets/{{hall.Image}}.jpeg"/>
+    <ion-card-content>
+    <ion-card-title>{{hall.HallName}}</ion-card-title>
+     <p>
+      {{hall.Description}}
+     </p>
+     <!-- routerLink="../halls-details/{{hall.HallName}}" -->
+     <ion-button class="cardButton" fill="clear" (click)="goTo(hall.HallName)">View details</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <div class="et_pb_column et_pb_column_1_2 et_pb_column_2 et_pb_css_mix_blend_mode_passthrough et-last-child et_had_animation" style="">
+		<div class="et_pb_module et_pb_image et_pb_image_1 et-animated et_had_animation et_multi_view__hover_selector et_multi_view__hovered" style="">
+      <span class="et_pb_image_wrap ">
+      <img decoding="async" data-srcset="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan.png 648w, https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan-480x596.png 480w" data-et-multi-view="{&quot;schema&quot;:{&quot;attrs&quot;:{&quot;desktop&quot;:{&quot;src&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan.png&quot;,&quot;alt&quot;:&quot;&quot;,&quot;title&quot;:&quot;&quot;,&quot;class&quot;:&quot;wp-image-10379&quot;,&quot;srcset&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan.png 648w, https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-480x596.png 480w&quot;,&quot;sizes&quot;:&quot;(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw&quot;},&quot;hover&quot;:{&quot;src&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1.png&quot;,&quot;srcset&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1.png 648w, https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1-480x596.png 480w&quot;,&quot;sizes&quot;:&quot;(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw&quot;}}},&quot;slug&quot;:&quot;et_pb_image&quot;}" data-src="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan.png" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw" class="wp-image-10379 et_multi_view_swapped ls-is-cached lazyloaded et_multi_view_image__loaded" src="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan-1.png" srcset="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan-1.png 648w, https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan-1-480x596.png 480w" sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw" title=""><noscript><img decoding="async" width="648" height="804" src="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan.png" alt="" title="" srcset="https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan.png 648w, https://www.ewbahrain.com/wp-content/uploads/2022/11/ali-hassan-480x596.png 480w" sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw" class="wp-image-10379" data-et-multi-view="{&quot;schema&quot;:{&quot;attrs&quot;:{&quot;desktop&quot;:{&quot;src&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan.png&quot;,&quot;alt&quot;:&quot;&quot;,&quot;title&quot;:&quot;&quot;,&quot;class&quot;:&quot;wp-image-10379&quot;,&quot;srcset&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan.png 648w, https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-480x596.png 480w&quot;,&quot;sizes&quot;:&quot;(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw&quot;},&quot;hover&quot;:{&quot;src&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1.png&quot;,&quot;srcset&quot;:&quot;https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1.png 648w, https:\/\/www.ewbahrain.com\/wp-content\/uploads\/2022\/11\/ali-hassan-1-480x596.png 480w&quot;,&quot;sizes&quot;:&quot;(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 648px, 100vw&quot;}}},&quot;slug&quot;:&quot;et_pb_image&quot;}" />
+      </noscript>
+      </span>
+    </div>
+
+    <div class="et_pb_module et_pb_text et_pb_text_3  et_pb_text_align_center et_pb_bg_layout_light">
+      <div class="et_pb_text_inner">
+        <h3>Ali Hasan Lari</h3>
+        <p style="text-align: center;"></p>
+      </div>
+    </div>
+
+    <div class="et_pb_module et_pb_text et_pb_text_4  et_pb_text_align_left et_pb_bg_layout_light">
+      <div class="et_pb_text_inner">
+        <p style="text-align: center;">Senior Manager, Corporate &amp; Government</p>
+      </div>
+    </div>
+ </div> -->
+
+  <!-- <ion-card *ngFor="let hall of Fb.halls$ | async">
+    <ion-card-content style="background-color: rgb(159, 203, 245)">
+    <ion-input [readonly]="true" label="Hall Number: " value="{{hall.HallNum}}" formControlName="hall.StudentID"></ion-input>
+    <ion-input [readonly]="true" label="First Name: " value="{{hall.NumBooths}}" formControlName="hall.FirstName"></ion-input>
+    <ion-input [readonly]="true" label="Last Name: " value="{{hall.Capacity}}" formControlName="hall.LastName"></ion-input>
+    <ion-input [readonly]="true" label="Age: " value="{{hall.Availability}}" formControlName="hall.Age"></ion-input>
+    <ion-input readonly="true" *ngIf="true" label="Gender: " value="{{hall.BusinessContact}}"></ion-input>
+    <ion-select *ngIf="isEditMode" label="Gender: " placeholder="Select Gender" interface="action-sheet" formControlName="hall.Gender">
+      <ion-select-option>Female</ion-select-option>
+      <ion-select-option>Male</ion-select-option>
+    </ion-select>
+    <ion-input [readonly]="true" label="Major: " value="{{hall.Major}}" formControlName="hall.Major"></ion-input>
+    <ion-input [readonly]="true" label="Phone Number: " value="{{hall.PhoneNumber}}" formControlName="hall.PhoneNumber"></ion-input>
+    <ion-input [readonly]="true" label="Email: " value="{{hall.Email}}" formControlName="hall.Email"></ion-input>
+    <ion-input [readonly]="true" label="password: " value="{{hall.password}}" formControlName="hall.password"></ion-input>
+    <ion-button color="primary" (click)="toggleEditMode()">{{ isEditMode ? 'Cancle' : 'Edit' }}</ion-button>
+     <ion-button color="primary" *ngIf="isEditMode" (click)="Edithall(hall)">Done</ion-button>
+     <ion-button color="danger" (click)="Removehall(hall)">Delete</ion-button>
+    </ion-card-content>
+  </ion-card>  -->
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p>&copy; {{ currentYear }} Exhibitione</p>
+  </ion-toolbar>
+</ion-footer>

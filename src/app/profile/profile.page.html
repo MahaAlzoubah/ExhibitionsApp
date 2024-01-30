@@ -1,13 +1,17 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Profile
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/'" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons style="margin-left: 10px;" slot="end">
+      <!-- Use color attribute to set the font color to white -->
+      <ion-button routerLink="/dashboard" color="light" mode="ios">Home</ion-button>
+      <ion-button routerLink="/chat" color="light" mode="ios">Chat</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content #content *ngIf="isSignIn">
   <ion-card>
     <ion-card-header class="ProHead">
      <ion-item lines="none"> <!-- Set lines to 'none' here -->
@@ -25,7 +29,7 @@
       <ion-list lines="none">
         <ion-item line="none">
           <ion-label>Email:</ion-label>
-          <ion-text>{{ Email }}</ion-text>
+          <ion-text>{{ UserEmail }}</ion-text>
         </ion-item>
       </ion-list>
       <ion-list lines="none">
@@ -33,37 +37,64 @@
           <ion-label>Type:</ion-label>
           <ion-text>{{ type }}</ion-text>
         </ion-item>
+        <ion-item>
+          <ion-button fill="clear" class="signout" (click)="signOut()">Sign out</ion-button>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <ion-list lines="none" *ngIf="(reservationRequestData.length === 0 && reservationEventData.length === 0 && !isAdmin)">
+    <ion-item line="none">
+      <p class="ion-text-center" style="color:#b7b7a4; font-weight: bold; margin-top: 100px; padding-left: 15px; padding-right: 15px;">
+        Opss you don't have any reservation requests or events
+      </p>
+      <ion-icon class="Bcenter" name="sad-outline"></ion-icon>
+    </ion-item>
+    <ion-item line="none">
+      <ion-button class="Bcenter" routerLink="/halls" fill="clear">Reserve Now !</ion-button>
+    </ion-item>
+  </ion-list>
+  
   
  <!-- Reserved Halls Section -->
-<ion-accordion-group *ngIf="reservationRequestData.length > 0">
+<ion-accordion-group #IonGroupA *ngIf="reservationRequestData.length > 0">
   <ion-accordion>
     <ion-item class="custom-item" slot="header">
       Your Reservation Requests
     </ion-item>
     <div class="ion-padding" slot="content">
-      <ion-card *ngFor="let request of reservationRequestData" lines="none">
+      <ion-card *ngFor="let request of reservationRequestData; let i = index" lines="none">
         <ion-card-content class="ion-text-wrap">
           <ion-grid>
             <ion-row align-items-center>
               <ion-col size="4">
-                  <ion-img [src]="'./assets/' + request.Image + '.jpeg'"></ion-img>
+                <ion-img [src]="'../assets/' + request.image + '.jpeg'"></ion-img>
               </ion-col>
               <ion-col size="7">
-                <ion-label>{{ request.HallName }}</ion-label>
+                <ion-row>
+                    <ion-col size="12">
+                      <ion-label>{{ request.HallName }}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-label>{{ request.Date }}</ion-label>
+                    </ion-col>
+
+                    </ion-row>
               </ion-col>
+      
               <ion-col size="12" class="ion-text-end ion-align-self-end">
                 <!-- Show the button when request.Status is equal to status[1].name -->
-                <ion-button size="small" color="success" *ngIf="request.Status === status[1].name" routerLink="/custom-page">
+                <ion-button size="small" color="success" *ngIf="request.Status === status[1].name" routerLink="/custom-page/{{request.HallName}}#{{request.Date}}">
                   Add Event
                 </ion-button>
                 <!-- Show the icon when request.Status is not equal to status[1].name -->
-                <ion-label [color]="status[0].color" *ngIf="request.Status == status[0].name">
+                <ion-label [color]="status[0].color" *ngIf="request.Status === status[0].name">
                   {{ status[0].name}} <ion-icon [name]="status[0].iconName"></ion-icon>
                 </ion-label>
-                <ion-label [color]="status[2].color" *ngIf="request.Status == status[2].name">
+                <ion-label [color]="status[2].color" *ngIf="request.Status ===status[2].name">
                   {{ status[2].name}} <ion-icon [name]="status[2].iconName"></ion-icon>
                 </ion-label>
               </ion-col>
@@ -76,8 +107,8 @@
 </ion-accordion-group>
 
 <!-- Reserved Events Section -->
-<ion-accordion-group *ngIf="reservationEventData.length > 0" >
-  <ion-accordion #Accordion>
+<ion-accordion-group IonGroupB *ngIf="reservationEventData.length > 0" >
+  <ion-accordion >
     <ion-item class="custom-item" slot="header" color="#fefae0">
       Your Events
     </ion-item>
@@ -96,8 +127,13 @@
               </ion-col>
             </ion-row >
             <ion-row align-items-center>
+              <ion-col >
+                <ion-label> Date: {{ event.Date }}</ion-label>
+              </ion-col>
+            </ion-row >
+            <ion-row align-items-center>
               <ion-col  class="ion-text-end ion-align-self-end">
-                <ion-button size="small" color="success" routerLink="/event-details/{{event.EventID}}">
+                <ion-button size="small" color="success" (click)="goTo(event.HallName, event.Date)">
                   View Details
                 </ion-button>
               </ion-col>
@@ -114,6 +150,6 @@
 <!-- Footer -->
 <ion-footer>
   <ion-toolbar>
-    <p>&copy; {{ currentYear }} Exhibitione</p>
+   &copy; {{ currentYear }} Exhibitione
   </ion-toolbar>
 </ion-footer>

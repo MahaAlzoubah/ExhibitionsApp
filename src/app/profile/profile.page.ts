@@ -1,9 +1,9 @@
-import { Component, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, ViewChild, ElementRef, QueryList, OnInit } from '@angular/core';
 import { FBserviceService } from '../fbservice.service';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
 import { getDocs, query, Firestore, where, collection } from '@angular/fire/firestore';
-import { Animation, AnimationController, IonCard } from '@ionic/angular';
+import { AlertController, Animation, AnimationController, IonContent } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage {
+export class ProfilePage{
   currentYear: number = new Date().getFullYear();
   
-  @ViewChildren(IonCard, { read: ElementRef })cardElements!: QueryList<ElementRef<HTMLIonCardElement>>;
+  @ViewChild(IonContent, { read: ElementRef }) content !: ElementRef<HTMLIonContentElement>;
 
   private animation: Animation | any ;
 
@@ -36,50 +36,98 @@ export class ProfilePage {
   }
 ];
   public users: any;
-  Email: any ="Ali.mo7@gmail.com";
+  UserEmail: any;
   name="";
   type="";
   reservationRequestData: any[] = [];
   reservationEventData: any[] = [];
-  constructor(public auth:Auth, public firestore: Firestore, public fbservice: FBserviceService, private animationCtrl: AnimationController , public router: Router) {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            this.Email = user.email;
-            console.log("User: "+user.email);
-        } else {
+  public isAdmin=true;
+  isSignIn =false;
+  constructor(public auth:Auth, public firestore: Firestore, public fbservice: FBserviceService, private animationCtrl: AnimationController , public router: Router, public alertCtrl: AlertController) {
+    this.initialize();
+  }
 
-        }
+  eventID: any;
+  async goTo(hallName: string, date: string){
+    console.log("hallName: " , hallName , "+" , "date", date);
+    const querySnapshot = await getDocs(collection(this.firestore, "events"));
+    querySnapshot.forEach((doc: any) => {
+      const event = doc.data();
+      console.log("event date: " , event);
+      if(event.HallName == hallName && event.Date == date){
+        this.eventID = doc.id;
+      }
     });
+    console.log("event id: " , this.eventID);
+   this.router.navigate(['../event-details/',this.eventID ]);
+  }
 
-    this.callUser();
-    this.callRequests();
-    this.callEvents();
+  async initialize() {
+    try {
+      const user = await new Promise<any>((resolve) => {
+        onAuthStateChanged(this.auth, (user) => {
+          resolve(user);
+        });
+      });
+
+      if (user) {
+        this.isSignIn =true;
+        const userEmail = (user as any)?.email;
+        this.UserEmail = String(userEmail);
+        console.log("User: " + userEmail);
+        this.callUser();
+        this.callRequests();
+        this.callEvents();
+      } else {
+        this.isSignIn =false;
+        this.warning();
+      }
+    } catch (error) {
+      console.error("Error during authentication state change:", error);
+    }
+  }
   
+  async warning(){
+    let alert = await this.alertCtrl.create({
+      header: "Opss!",
+      message: "you must sign in first",
+      buttons: [{
+        text: "Ok",
+        handler: () => {
+          this.router.navigateByUrl('/home');
+        }
+      },{
+        text: "Cancel",
+        handler: () => {
+        }
+      }]
+    });
+    alert.present();
   }
   ngAfterViewInit() {
-    this.cardAnimation();
+    setTimeout(()=> {
+      this.ElementsAnimation();
+    }, 1000)
+
   }
 
-  async cardAnimation() {
-    const cardElements = this.cardElements.toArray();
 
-    for (let i = 0; i < cardElements.length; i++) {
-      const cardAnimation: Animation = this.animationCtrl
-        .create()
-        .addElement(cardElements[i].nativeElement)
-        .duration(1500)
-        .fromTo('transform', 'translateX(100px)', 'translateX(0px)')
-        .fromTo('opacity', '1', '1');
+  
+  // change here
 
-      await cardAnimation.play().catch((err) => console.error(err));
-    }
-  } 
+  async ElementsAnimation() {
+    const contentAnimation = this.animationCtrl
+      .create()
+      .addElement(this.content.nativeElement)
+      .duration(500)
+      .fromTo('transform', 'translateX(100px)', 'translateX(0px)')
+      .fromTo('opacity', '0', '1')
 
-
-
-
+    await contentAnimation.play();
+  
+  }
     async callUser() {
-      const q = query(collection(this.firestore, "users"), where("Email", "==", this.Email));
+      const q = query(collection(this.firestore, "users"), where("Email", "==", this.UserEmail));
       const querySnapshot = await getDocs(q);
     
       if (!querySnapshot.empty) {
@@ -88,10 +136,16 @@ export class ProfilePage {
         this.name=this.users.Name;
         this.type=this.users.Type;
     }
+    if(this.type == "User"){
+      this.isAdmin = false;
+    }
+    else{
+      this.isAdmin = true;
+    }
   }
 
   async callRequests() {
-    const q = query(collection(this.firestore, "reservationRequest"), where("UserEmail", "==", this.Email));
+    const q = query(collection(this.firestore, "reservationRequest"), where("UserEmail", "==", this.UserEmail));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
  
@@ -114,7 +168,7 @@ export class ProfilePage {
   }
   async callEvents() {
     try {
-      const q = query(collection(this.firestore, "reservationEvents"), where("userEmail", "==", this.Email));
+      const q = query(collection(this.firestore, "reservationEvents"), where("userEmail", "==", this.UserEmail));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
@@ -132,5 +186,9 @@ export class ProfilePage {
     }
   }
   
+
+  signOut(){
+    this.fbservice.signOut();
+  }
 
 }
